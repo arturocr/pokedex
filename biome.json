@@ -5,6 +5,7 @@
   },
   "linter": {
     "enabled": true,
+    "ignore": ["src/generated/*.*"],
     "rules": {
       "recommended": true,
       "nursery": {
@@ -17,7 +18,8 @@
     }
   },
   "formatter": {
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "ignore": ["src/generated/*.*"]
   },
   "overrides": [
     {

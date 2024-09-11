@@ -10,20 +10,49 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "format": "npx @biomejs/biome format --write ./",
-    "lint": "npx @biomejs/biome lint --write ./",
-    "preview": "vite preview"
+    "codegen": "pnpm exec graphql-codegen --require dotenv/config",
+    "format": "pnpm exec biome format --write ./",
+    "lint": "pnpm exec biome lint --write ./",
+    "preview": "vite preview",
+    "upg": "pnpm exec npm-check-updates --interactive"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.8",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.0.2",
+    "@mui/material": "^6.0.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@types/react": "^18.3.3",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@types/node": "^22.5.4",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "graphql": "^16.9.0",
+    "npm-check-updates": "^17.1.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.3"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
