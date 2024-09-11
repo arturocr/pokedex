@@ -2,23 +2,18 @@ import { useQuery } from "@apollo/client";
 import {
   Autocomplete,
   Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
   CircularProgress,
   Grid2,
   Skeleton,
-  Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import humanizeString from "humanize-string";
 import { Fragment, type SyntheticEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import BottomPagination from "../../components/BottomPagination";
 import Layout from "../../components/Layout";
+import PokemonCard from "../../components/PokemonCard";
 import type {
   GetAllPokemonsNamesQuery,
   GetPokemonsQuery,
@@ -110,7 +105,7 @@ const Home = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Search"
+                label="Search a Pokémon"
                 slotProps={{
                   input: {
                     ...params.InputProps,
@@ -142,86 +137,17 @@ const Home = () => {
             ))}
           </>
         ) : (
-          <>
-            {pokemons.map((pokemon) => (
-              <Grid2
-                key={pokemon.id}
-                size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
-              >
-                <Card elevation={3}>
-                  <CardActionArea
-                    component={Link}
-                    to={`/pokemon/${pokemon.id}`}
-                  >
-                    <CardMedia
-                      component="img"
-                      image={
-                        pokemon.pokemon_v2_pokemonsprites[0].sprites.other[
-                          "official-artwork"
-                        ].front_default
-                      }
-                      alt={humanizeString(pokemon.name)}
-                    />
-                    <CardContent sx={{ textAlign: "center" }}>
-                      <Typography
-                        gutterBottom
-                        variant="h6"
-                        component="div"
-                        textTransform="capitalize"
-                      >
-                        {humanizeString(pokemon.name)}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid2>
-            ))}
-          </>
+          pokemons.map((pokemon) => (
+            <Grid2
+              key={pokemon.id}
+              size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
+            >
+              <PokemonCard pokemon={pokemon} />
+            </Grid2>
+          ))
         )}
       </Grid2>
-      <Stack
-        bgcolor={"#FFFFFFCC"}
-        boxShadow={5}
-        direction="row"
-        gap={2}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "fixed",
-          bottom: 0,
-          width: "100%",
-        }}
-        p={2}
-      >
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled={pagination.offset === 0}
-          size="large"
-          onClick={() => {
-            setPagination({
-              ...pagination,
-              offset: pagination.offset - pagination.limit,
-            });
-          }}
-        >
-          Prev
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          onClick={() => {
-            setPagination({
-              ...pagination,
-              offset: pagination.offset + pagination.limit,
-            });
-          }}
-        >
-          Next
-        </Button>
-      </Stack>
+      <BottomPagination pagination={pagination} setPagination={setPagination} />
     </Layout>
   );
 };

@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  query GetPokemonTypes {\n    pokemon_v2_type {\n      name\n      id\n    }\n  }\n": types.GetPokemonTypesDocument,
     "\n  query GetAllPokemonsNames {\n    pokemon_v2_pokemon {\n      id\n      name\n    }\n  }\n": types.GetAllPokemonsNamesDocument,
-    "\n  query GetPokemons($limit: Int = 10, $offset: Int = 0) {\n    pokemon_v2_pokemon(\n      limit: $limit,\n      offset: $offset\n    ) {\n      id\n      name\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n": types.GetPokemonsDocument,
+    "\n  query GetPokemons($limit: Int = 10, $offset: Int = 0) {\n    pokemon_v2_pokemon(\n      limit: $limit,\n      offset: $offset\n    ) {\n      id\n      name\n      order\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n": types.GetPokemonsDocument,
     "\n  query GetPokemonById($id: Int!) {\n    pokemon_v2_pokemon(\n      where: {id: {_eq: $id}}\n    ) {\n      id\n      name\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n": types.GetPokemonByIdDocument,
 };
 
@@ -44,7 +44,7 @@ export function gql(source: "\n  query GetAllPokemonsNames {\n    pokemon_v2_pok
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query GetPokemons($limit: Int = 10, $offset: Int = 0) {\n    pokemon_v2_pokemon(\n      limit: $limit,\n      offset: $offset\n    ) {\n      id\n      name\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetPokemons($limit: Int = 10, $offset: Int = 0) {\n    pokemon_v2_pokemon(\n      limit: $limit,\n      offset: $offset\n    ) {\n      id\n      name\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query GetPokemons($limit: Int = 10, $offset: Int = 0) {\n    pokemon_v2_pokemon(\n      limit: $limit,\n      offset: $offset\n    ) {\n      id\n      name\n      order\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetPokemons($limit: Int = 10, $offset: Int = 0) {\n    pokemon_v2_pokemon(\n      limit: $limit,\n      offset: $offset\n    ) {\n      id\n      name\n      order\n      pokemon_v2_pokemonsprites {\n        sprites\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

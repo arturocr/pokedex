@@ -14,8 +14,8 @@ import { GET_POKEMON_BY_ID } from "../../graphql/queries";
 import { useTitle } from "../../hooks/useTitle";
 
 const Pokemon = () => {
-  useTitle("Pokémon");
   const [pokemon, setPokemon] = useState<Pokemon_V2_Pokemon>();
+  useTitle(`Pokémon${pokemon ? ` - ${humanizeString(pokemon.name)}` : ""}`);
   const { id } = useParams<{ id: string }>();
   const { loading, called, error } = useQuery<
     GetPokemonByIdQuery,

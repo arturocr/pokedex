@@ -26,6 +26,7 @@ export const GET_POKEMONS = gql(`
     ) {
       id
       name
+      order
       pokemon_v2_pokemonsprites {
         sprites
       }

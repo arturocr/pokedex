@@ -1,10 +1,11 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import routes from "./routes";
+import theme from "./theme";
 
 import "./index.css";
 
@@ -18,8 +19,6 @@ const client = new ApolloClient({
 });
 
 const router = createBrowserRouter(routes);
-
-const theme = createTheme({});
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
