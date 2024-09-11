@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Chip,
   CircularProgress,
   Container,
   Grid2,
@@ -155,13 +156,16 @@ const Pokemon = () => {
                   </Typography>
                   <Typography variant="body1">
                     <strong>Types:</strong>{" "}
-                    <span style={{ textTransform: "capitalize" }}>
-                      {pokemon.pokemon_v2_pokemontypes
-                        .map((type) =>
-                          humanizeString(`${type.pokemon_v2_type?.name}`),
-                        )
-                        .join(", ")}
-                    </span>
+                    {pokemon.pokemon_v2_pokemontypes.map((type) => (
+                      <Chip
+                        key={type.id}
+                        component="span"
+                        color="info"
+                        label={humanizeString(`${type.pokemon_v2_type?.name}`)}
+                        variant="outlined"
+                        sx={{ mr: 1, textTransform: "capitalize" }}
+                      />
+                    ))}
                   </Typography>
                   <Box>
                     <Button variant="contained" onClick={actionHandler}>

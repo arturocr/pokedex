@@ -29,6 +29,12 @@ export const GET_POKEMONS = gql(`
       pokemon_v2_pokemonsprites {
         sprites
       }
+      pokemon_v2_pokemontypes {
+        id
+        pokemon_v2_type {
+          name
+        }
+      }
     }
   }
 `);
@@ -49,10 +55,12 @@ export const GET_POKEMONS_BY_IDS = gql(`
       }
       pokemon_v2_pokemonabilities {
         pokemon_v2_ability {
+          id
           name
         }
       }
       pokemon_v2_pokemontypes {
+        id
         pokemon_v2_type {
           name
         }

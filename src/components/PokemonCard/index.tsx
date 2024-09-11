@@ -3,6 +3,8 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
+  Stack,
   Typography,
 } from "@mui/material";
 import humanizeString from "humanize-string";
@@ -40,6 +42,22 @@ const PokemonCard = ({ fromMine, pokemon }: PokemonCardProps) => {
           >
             {humanizeString(pokemon.name)}
           </Typography>
+          <Stack
+            alignItems="center"
+            direction="row"
+            justifyContent="center"
+            gap={1}
+          >
+            {pokemon.pokemon_v2_pokemontypes.map((type) => (
+              <Chip
+                key={type.id}
+                color="info"
+                label={humanizeString(`${type.pokemon_v2_type?.name}`)}
+                variant="outlined"
+                sx={{ textTransform: "capitalize" }}
+              />
+            ))}
+          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>
