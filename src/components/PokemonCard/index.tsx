@@ -11,13 +11,17 @@ import { Link } from "react-router-dom";
 import type { Pokemon_V2_Pokemon } from "../../generated/graphql";
 
 type PokemonCardProps = {
+  fromMine: boolean;
   pokemon: Pokemon_V2_Pokemon;
 };
 
-const PokemonCard = ({ pokemon }: PokemonCardProps) => {
+const PokemonCard = ({ fromMine, pokemon }: PokemonCardProps) => {
   return (
     <Card elevation={3}>
-      <CardActionArea component={Link} to={`/pokemon/${pokemon.id}`}>
+      <CardActionArea
+        component={Link}
+        to={`/pokemon/${pokemon.id}${fromMine ? "?fromMine=1" : ""}`}
+      >
         <CardMedia
           component="img"
           image={

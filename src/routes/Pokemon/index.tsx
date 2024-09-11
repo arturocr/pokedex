@@ -13,16 +13,16 @@ import {
 } from "@mui/material";
 import humanizeString from "humanize-string";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import { ChevronLeft } from "@mui/icons-material";
 import Layout from "../../components/Layout";
 import type {
-  GetPokemonByIdQuery,
-  GetPokemonByIdQueryVariables,
+  GetPokemonsByIdsQuery,
+  GetPokemonsByIdsQueryVariables,
   Pokemon_V2_Pokemon,
 } from "../../generated/graphql";
-import { GET_POKEMON_BY_ID } from "../../graphql/queries";
+import { GET_POKEMONS_BY_IDS } from "../../graphql/queries";
 import { useTitle } from "../../hooks/useTitle";
 import { useAppStore } from "../../store";
 
@@ -35,12 +35,14 @@ const Pokemon = () => {
   const [pokemon, setPokemon] = useState<Pokemon_V2_Pokemon>();
   useTitle(`Pokémon${pokemon ? ` - ${humanizeString(pokemon.name)}` : ""}`);
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const fromMine = Boolean(searchParams.get("fromMine"));
   const { loading, called, error } = useQuery<
-    GetPokemonByIdQuery,
-    GetPokemonByIdQueryVariables
-  >(GET_POKEMON_BY_ID, {
+    GetPokemonsByIdsQuery,
+    GetPokemonsByIdsQueryVariables
+  >(GET_POKEMONS_BY_IDS, {
     variables: {
-      id: Number.parseInt(id ?? "0", 10),
+      ids: [Number.parseInt(id ?? "0", 10)],
     },
     onCompleted: (data) => {
       setPokemon(data.pokemon_v2_pokemon[0] as Pokemon_V2_Pokemon);
@@ -98,15 +100,16 @@ const Pokemon = () => {
       >
         <Button
           component={Link}
-          to="/"
+          to={fromMine ? "/mine" : "/"}
           color="secondary"
           variant="contained"
-          sx={{ mt: 4 }}
+          sx={{ mt: 2 }}
         >
-          <ChevronLeft /> Go to list
+          <ChevronLeft />{" "}
+          {fromMine ? "Go back to my Pokémons" : "Go back to Home"}
         </Button>
         {pokemon ? (
-          <Card elevation={3} sx={{ m: 4 }}>
+          <Card elevation={3} sx={{ mt: 2 }}>
             <CardContent>
               <Grid2
                 container

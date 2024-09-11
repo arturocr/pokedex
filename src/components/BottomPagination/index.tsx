@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useAppStore } from "../../store";
 const BottomPagination = () => {
   const { limit, offset, setOffset } = useAppStore((state) => ({
@@ -8,7 +8,7 @@ const BottomPagination = () => {
   }));
   return (
     <Stack
-      bgcolor={"#919191CC"}
+      bgcolor={"#919191EE"}
       boxShadow={5}
       direction="row"
       gap={2}
@@ -33,6 +33,9 @@ const BottomPagination = () => {
       >
         Prev
       </Button>
+      <Typography color="common.white" fontWeight="bold" variant="body2">
+        Page {offset / limit + 1}
+      </Typography>
       <Button
         variant="contained"
         color="secondary"

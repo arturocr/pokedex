@@ -3,7 +3,7 @@ import {
   Autocomplete,
   Box,
   CircularProgress,
-  Grid2,
+  Container,
   Stack,
   TextField,
 } from "@mui/material";
@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import BottomPagination from "../../components/BottomPagination";
 import Layout from "../../components/Layout";
-import PokemonCard from "../../components/PokemonCard";
+import PokemonsList from "../../components/PokemonsList";
 import type {
   GetAllPokemonsNamesQuery,
   GetPokemonsQuery,
@@ -71,8 +71,9 @@ const Home = () => {
 
   return (
     <Layout>
-      <Box m={4}>
+      <Container>
         <Box
+          mt={4}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -122,23 +123,14 @@ const Home = () => {
             )}
           />
         </Box>
-      </Box>
-      {loadingPokemons ? (
-        <Stack alignItems="center" height="90vh" justifyContent="center">
-          <CircularProgress size={50} />
-        </Stack>
-      ) : (
-        <Grid2 container spacing={4} m={4} pb={10}>
-          {pokemons.map((pokemon) => (
-            <Grid2
-              key={pokemon.id}
-              size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
-            >
-              <PokemonCard pokemon={pokemon} />
-            </Grid2>
-          ))}
-        </Grid2>
-      )}
+        {loadingPokemons ? (
+          <Stack alignItems="center" height="90vh" justifyContent="center">
+            <CircularProgress size={50} />
+          </Stack>
+        ) : (
+          <PokemonsList pokemons={pokemons} />
+        )}
+      </Container>
       <BottomPagination />
     </Layout>
   );

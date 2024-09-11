@@ -19,7 +19,7 @@ export const GET_ALL_POKEMON_NAMES = gql(`
 `);
 
 export const GET_POKEMONS = gql(`
-  query GetPokemons($limit: Int = 10, $offset: Int = 0) {
+  query GetPokemons($limit: Int = 12, $offset: Int = 0) {
     pokemon_v2_pokemon(
       limit: $limit,
       offset: $offset
@@ -33,10 +33,12 @@ export const GET_POKEMONS = gql(`
   }
 `);
 
-export const GET_POKEMON_BY_ID = gql(`
-  query GetPokemonById($id: Int!) {
+export const GET_POKEMONS_BY_IDS = gql(`
+  query GetPokemonsByIds($limit: Int = 12, $offset: Int = 0, $ids: [Int!]!) {
     pokemon_v2_pokemon(
-      where: {id: {_eq: $id}}
+      limit: $limit,
+      offset: $offset,
+      where: {id: {_in: $ids}}
     ) {
       id
       name
