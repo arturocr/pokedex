@@ -8,7 +8,7 @@ const Pokeball = () => (
   >
     <title>Pokémon</title>
     <g strokeWidth="0" />
-    <g stroke-linecap="round" stroke-linejoin="round" />
+    <g strokeLinecap="round" strokeLinejoin="round" />
     <g>
       <path
         d="M21.9012 13H16.8506C16.3873 15.2822 14.3696 17 11.9506 17C9.53167 17 7.51391 15.2822 7.05064 13H2C2.50172 18.0533 6.76528 22 11.9506 22C17.136 22 21.3995 18.0533 21.9012 13Z"
@@ -19,10 +19,10 @@ const Pokeball = () => (
         fill="#ffffff"
       />
       <path
-        clip-rule="evenodd"
+        clipRule="evenodd"
         d="M11.9506 15C13.6075 15 14.9506 13.6569 14.9506 12C14.9506 10.3431 13.6075 9 11.9506 9C10.2938 9 8.95062 10.3431 8.95062 12C8.95062 13.6569 10.2938 15 11.9506 15ZM13.4506 12C13.4506 12.8284 12.7791 13.5 11.9506 13.5C11.1222 13.5 10.4506 12.8284 10.4506 12C10.4506 11.1716 11.1222 10.5 11.9506 10.5C12.7791 10.5 13.4506 11.1716 13.4506 12Z"
         fill="#ffffff"
-        fill-rule="evenodd"
+        fillRule="evenodd"
       />
     </g>
   </svg>

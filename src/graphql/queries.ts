@@ -41,8 +41,21 @@ export const GET_POKEMON_BY_ID = gql(`
     ) {
       id
       name
+      order
+      height
+      weight
       pokemon_v2_pokemonsprites {
         sprites
+      }
+      pokemon_v2_pokemonabilities {
+        pokemon_v2_ability {
+          name
+        }
+      }
+      pokemon_v2_pokemontypes {
+        pokemon_v2_type {
+          name
+        }
       }
     }
   }

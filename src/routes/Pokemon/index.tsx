@@ -1,9 +1,22 @@
 import { useQuery } from "@apollo/client";
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  CircularProgress,
+  Container,
+  Grid2,
+  Stack,
+  Typography,
+} from "@mui/material";
 import humanizeString from "humanize-string";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
+import { ChevronLeft, Numbers } from "@mui/icons-material";
 import Layout from "../../components/Layout";
 import type {
   GetPokemonByIdQuery,
@@ -65,12 +78,91 @@ const Pokemon = () => {
 
   return (
     <Layout>
-      <Box m={4}>
-        <Typography textTransform="capitalize" variant="h4">
-          {humanizeString(pokemon?.name ?? "")}
-        </Typography>
-        <pre>{JSON.stringify(pokemon, null, 2)}</pre>
-      </Box>
+      <Container
+        sx={{
+          width: "auto",
+        }}
+      >
+        <Button
+          component={Link}
+          to="/"
+          color="secondary"
+          variant="contained"
+          sx={{ mt: 4 }}
+        >
+          <ChevronLeft /> Go to list
+        </Button>
+        {pokemon ? (
+          <Card elevation={3} sx={{ m: 4 }}>
+            <CardContent>
+              <Grid2
+                container
+                spacing={2}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Grid2 size={{ xs: 12, sm: 4 }}>
+                  <CardMedia
+                    component="img"
+                    image={
+                      pokemon?.pokemon_v2_pokemonsprites[0].sprites.other[
+                        "official-artwork"
+                      ].front_default
+                    }
+                    alt={humanizeString(pokemon?.name)}
+                  />
+                </Grid2>
+                <Grid2
+                  container
+                  direction="column"
+                  gap={2}
+                  size={{ xs: 12, sm: 8 }}
+                >
+                  <Typography textTransform="capitalize" variant="h4">
+                    {humanizeString(`${pokemon.name}`)}{" "}
+                    <Chip
+                      color="secondary"
+                      icon={<Numbers />}
+                      label={pokemon.order}
+                      size="small"
+                      variant="outlined"
+                    />
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Height:</strong> {(pokemon.height ?? 0) / 10} m
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Weight:</strong> {(pokemon.weight ?? 0) / 10} kg
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Abilities:</strong>{" "}
+                    <span style={{ textTransform: "capitalize" }}>
+                      {pokemon.pokemon_v2_pokemonabilities
+                        .map((ability) =>
+                          humanizeString(`${ability.pokemon_v2_ability?.name}`),
+                        )
+                        .join(", ")}
+                    </span>
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Types:</strong>{" "}
+                    <span style={{ textTransform: "capitalize" }}>
+                      {pokemon.pokemon_v2_pokemontypes
+                        .map((type) =>
+                          humanizeString(`${type.pokemon_v2_type?.name}`),
+                        )
+                        .join(", ")}
+                    </span>
+                  </Typography>
+                  <Box>
+                    <Button variant="contained">Catch it!</Button>
+                  </Box>
+                </Grid2>
+              </Grid2>
+            </CardContent>
+          </Card>
+        ) : null}
+      </Container>
     </Layout>
   );
 };
