@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { ChevronLeft } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,15 +9,21 @@ import {
   Chip,
   CircularProgress,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid2,
+  Slide,
   Stack,
   Typography,
 } from "@mui/material";
+import type { TransitionProps } from "@mui/material/transitions";
 import humanizeString from "humanize-string";
-import { useState } from "react";
+import { type ReactElement, forwardRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
-import { ChevronLeft } from "@mui/icons-material";
 import Layout from "../../components/Layout";
 import type {
   GetPokemonsByIdsQuery,
@@ -27,17 +34,30 @@ import { GET_POKEMONS_BY_IDS } from "../../graphql/queries";
 import { useTitle } from "../../hooks/useTitle";
 import { useAppStore } from "../../store";
 
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    children: ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const Pokemon = () => {
   const { catchIt, pokemons, releaseIt } = useAppStore((state) => ({
     catchIt: state.catchIt,
     pokemons: state.pokemons,
     releaseIt: state.releaseIt,
   }));
+  const [confirmationModalOpen, setConfirmationModalOpen] =
+    useState<boolean>(false);
   const [pokemon, setPokemon] = useState<Pokemon_V2_Pokemon>();
   useTitle(`Pokémon${pokemon ? ` - ${humanizeString(pokemon.name)}` : ""}`);
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
   const fromMine = Boolean(searchParams.get("fromMine"));
+
   const { loading, called, error } = useQuery<
     GetPokemonsByIdsQuery,
     GetPokemonsByIdsQueryVariables
@@ -52,10 +72,23 @@ const Pokemon = () => {
 
   const actionHandler = () => {
     if (pokemons.includes(pokemon?.id ?? 0)) {
-      releaseIt(pokemon?.id ?? 0);
+      handleConfirmationOpen();
     } else {
       catchIt(pokemon?.id ?? 0);
     }
+  };
+
+  const handleConfirmationOpen = () => {
+    setConfirmationModalOpen(true);
+  };
+
+  const handleConfirmationClose = () => {
+    setConfirmationModalOpen(false);
+  };
+
+  const handleRelease = () => {
+    releaseIt(pokemon?.id ?? 0);
+    setConfirmationModalOpen(false);
   };
 
   if (loading) {
@@ -180,6 +213,28 @@ const Pokemon = () => {
           </Card>
         ) : null}
       </Container>
+      <Dialog
+        open={confirmationModalOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleConfirmationClose}
+        aria-describedby="confirmation-dialog"
+      >
+        <DialogTitle>{"Do you want to release this Pokémon?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirmation-dialog">
+            You are about to release this precious Pokémon. Are you sure?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleConfirmationClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleRelease}>
+            Release
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Layout>
   );
 };
