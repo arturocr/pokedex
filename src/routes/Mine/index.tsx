@@ -19,12 +19,11 @@ import { useAppStore } from "../../store";
 
 const Mine = () => {
   useTitle("Mine");
-  const { limit, pokemons } = useAppStore((state) => ({
-    limit: state.limit,
+  const { pokemons } = useAppStore((state) => ({
     pokemons: state.pokemons,
   }));
 
-  const { data, loading, error, called } = useQuery<
+  const { data, loading, called } = useQuery<
     GetPokemonsByIdsQuery,
     GetPokemonsByIdsQueryVariables
   >(GET_POKEMONS_BY_IDS, {
@@ -46,7 +45,7 @@ const Mine = () => {
           <Stack alignItems="center" height="90vh" justifyContent="center">
             <CircularProgress size={50} />
           </Stack>
-        ) : data?.pokemon_v2_pokemon.length === 0 ? (
+        ) : data?.pokemon_v2_pokemon.length === 0 && called ? (
           <Typography textAlign="center" variant="h6">
             You don't have any Pokémon yet, go catch 'em all!
           </Typography>
