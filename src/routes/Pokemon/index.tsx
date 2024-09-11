@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Chip,
   CircularProgress,
   Container,
   Grid2,
@@ -16,7 +15,7 @@ import humanizeString from "humanize-string";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { ChevronLeft, Numbers } from "@mui/icons-material";
+import { ChevronLeft } from "@mui/icons-material";
 import Layout from "../../components/Layout";
 import type {
   GetPokemonByIdQuery,
@@ -25,8 +24,14 @@ import type {
 } from "../../generated/graphql";
 import { GET_POKEMON_BY_ID } from "../../graphql/queries";
 import { useTitle } from "../../hooks/useTitle";
+import { useAppStore } from "../../store";
 
 const Pokemon = () => {
+  const { catchIt, pokemons, releaseIt } = useAppStore((state) => ({
+    catchIt: state.catchIt,
+    pokemons: state.pokemons,
+    releaseIt: state.releaseIt,
+  }));
   const [pokemon, setPokemon] = useState<Pokemon_V2_Pokemon>();
   useTitle(`Pokémon${pokemon ? ` - ${humanizeString(pokemon.name)}` : ""}`);
   const { id } = useParams<{ id: string }>();
@@ -41,6 +46,14 @@ const Pokemon = () => {
       setPokemon(data.pokemon_v2_pokemon[0] as Pokemon_V2_Pokemon);
     },
   });
+
+  const actionHandler = () => {
+    if (pokemons.includes(pokemon?.id ?? 0)) {
+      releaseIt(pokemon?.id ?? 0);
+    } else {
+      catchIt(pokemon?.id ?? 0);
+    }
+  };
 
   if (loading) {
     return (
@@ -119,14 +132,7 @@ const Pokemon = () => {
                   size={{ xs: 12, sm: 8 }}
                 >
                   <Typography textTransform="capitalize" variant="h4">
-                    {humanizeString(`${pokemon.name}`)}{" "}
-                    <Chip
-                      color="secondary"
-                      icon={<Numbers />}
-                      label={pokemon.order}
-                      size="small"
-                      variant="outlined"
-                    />
+                    {humanizeString(`${pokemon.name}`)}
                   </Typography>
                   <Typography variant="body1">
                     <strong>Height:</strong> {(pokemon.height ?? 0) / 10} m
@@ -155,7 +161,11 @@ const Pokemon = () => {
                     </span>
                   </Typography>
                   <Box>
-                    <Button variant="contained">Catch it!</Button>
+                    <Button variant="contained" onClick={actionHandler}>
+                      {pokemons.includes(pokemon.id)
+                        ? "Release it!"
+                        : "Catch it!"}
+                    </Button>
                   </Box>
                 </Grid2>
               </Grid2>

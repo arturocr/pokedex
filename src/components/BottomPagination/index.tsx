@@ -1,17 +1,11 @@
 import { Button, Stack } from "@mui/material";
-
-type BottomPaginationProps = {
-  pagination: {
-    limit: number;
-    offset: number;
-  };
-  setPagination: (pagination: { limit: number; offset: number }) => void;
-};
-
-const BottomPagination = ({
-  pagination,
-  setPagination,
-}: BottomPaginationProps) => {
+import { useAppStore } from "../../store";
+const BottomPagination = () => {
+  const { limit, offset, setOffset } = useAppStore((state) => ({
+    limit: state.limit,
+    offset: state.offset,
+    setOffset: state.setOffset,
+  }));
   return (
     <Stack
       bgcolor={"#919191CC"}
@@ -31,13 +25,10 @@ const BottomPagination = ({
       <Button
         variant="contained"
         color="secondary"
-        disabled={pagination.offset === 0}
+        disabled={offset === 0}
         size="large"
         onClick={() => {
-          setPagination({
-            ...pagination,
-            offset: pagination.offset - pagination.limit,
-          });
+          setOffset(offset - limit);
         }}
       >
         Prev
@@ -47,10 +38,7 @@ const BottomPagination = ({
         color="secondary"
         size="large"
         onClick={() => {
-          setPagination({
-            ...pagination,
-            offset: pagination.offset + pagination.limit,
-          });
+          setOffset(offset + limit);
         }}
       >
         Next

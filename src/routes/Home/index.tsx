@@ -4,7 +4,7 @@ import {
   Box,
   CircularProgress,
   Grid2,
-  Skeleton,
+  Stack,
   TextField,
 } from "@mui/material";
 import humanizeString from "humanize-string";
@@ -21,17 +21,15 @@ import type {
   Pokemon_V2_Pokemon,
 } from "../../generated/graphql";
 import { GET_ALL_POKEMON_NAMES, GET_POKEMONS } from "../../graphql/queries";
+import { useAppStore } from "../../store";
 
 const Home = () => {
+  const { limit, offset } = useAppStore((state) => ({
+    limit: state.limit,
+    offset: state.offset,
+  }));
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<{ id: number; name: string }[]>([]);
-  const [pagination, setPagination] = useState<{
-    limit: number;
-    offset: number;
-  }>({
-    limit: 12,
-    offset: 0,
-  });
   const [pokemons, setPokemons] = useState<Pokemon_V2_Pokemon[]>([]);
   const navigate = useNavigate();
 
@@ -54,7 +52,8 @@ const Home = () => {
     GetPokemonsQueryVariables
   >(GET_POKEMONS, {
     variables: {
-      ...pagination,
+      limit,
+      offset,
     },
     onCompleted: (data) => {
       setPokemons(data.pokemon_v2_pokemon as Pokemon_V2_Pokemon[]);
@@ -124,30 +123,23 @@ const Home = () => {
           />
         </Box>
       </Box>
-      <Grid2 container spacing={4} m={4} pb={10}>
-        {loadingPokemons ? (
-          <>
-            {Array.from({ length: pagination.limit }).map((_) => (
-              <Grid2
-                key={undefined}
-                size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
-              >
-                <Skeleton variant="rectangular" height={390} />
-              </Grid2>
-            ))}
-          </>
-        ) : (
-          pokemons.map((pokemon) => (
+      {loadingPokemons ? (
+        <Stack alignItems="center" height="90vh" justifyContent="center">
+          <CircularProgress size={50} />
+        </Stack>
+      ) : (
+        <Grid2 container spacing={4} m={4} pb={10}>
+          {pokemons.map((pokemon) => (
             <Grid2
               key={pokemon.id}
               size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
             >
               <PokemonCard pokemon={pokemon} />
             </Grid2>
-          ))
-        )}
-      </Grid2>
-      <BottomPagination pagination={pagination} setPagination={setPagination} />
+          ))}
+        </Grid2>
+      )}
+      <BottomPagination />
     </Layout>
   );
 };

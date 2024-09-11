@@ -26,7 +26,6 @@ export const GET_POKEMONS = gql(`
     ) {
       id
       name
-      order
       pokemon_v2_pokemonsprites {
         sprites
       }
@@ -41,7 +40,6 @@ export const GET_POKEMON_BY_ID = gql(`
     ) {
       id
       name
-      order
       height
       weight
       pokemon_v2_pokemonsprites {

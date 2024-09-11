@@ -1,10 +1,8 @@
-import { Numbers } from "@mui/icons-material";
 import {
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
-  Chip,
   Typography,
 } from "@mui/material";
 import humanizeString from "humanize-string";
@@ -36,14 +34,7 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
             component="div"
             textTransform="capitalize"
           >
-            {humanizeString(pokemon.name)}{" "}
-            <Chip
-              color="secondary"
-              icon={<Numbers />}
-              label={pokemon.order}
-              size="small"
-              variant="outlined"
-            />
+            {humanizeString(pokemon.name)}
           </Typography>
         </CardContent>
       </CardActionArea>
