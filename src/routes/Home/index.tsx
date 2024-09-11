@@ -6,6 +6,7 @@ import {
   Container,
   Stack,
   TextField,
+  useTheme,
 } from "@mui/material";
 import humanizeString from "humanize-string";
 import { Fragment, type SyntheticEvent, useState } from "react";
@@ -31,6 +32,7 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<{ id: number; name: string }[]>([]);
   const [pokemons, setPokemons] = useState<Pokemon_V2_Pokemon[]>([]);
+  const theme = useTheme();
   const navigate = useNavigate();
 
   const { loading: loadingAllPokemons } = useQuery<GetAllPokemonsNamesQuery>(
@@ -57,6 +59,7 @@ const Home = () => {
     },
     onCompleted: (data) => {
       setPokemons(data.pokemon_v2_pokemon as Pokemon_V2_Pokemon[]);
+      window.scrollTo(0, 0);
     },
   });
 
@@ -71,58 +74,77 @@ const Home = () => {
 
   return (
     <Layout>
-      <Container>
-        <Box
-          mt={4}
+      <Box
+        sx={{
+          bgcolor: theme.palette.background.paper,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          py: 2,
+          [theme.breakpoints.down("md")]: {
+            position: "fixed",
+            px: 4,
+            width: "100%",
+            zIndex: 10,
+            boxShadow: theme.shadows[3],
+          },
+        }}
+      >
+        <Autocomplete
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            [theme.breakpoints.down("sm")]: {
+              width: "100%",
+            },
+            [theme.breakpoints.up("sm")]: {
+              width: "70%",
+            },
+            [theme.breakpoints.up("md")]: {
+              width: "50%",
+            },
+            [theme.breakpoints.up("lg")]: {
+              width: "35%",
+            },
+            "& .MuiAutocomplete-input": {
+              textTransform: "capitalize",
+            },
           }}
-        >
-          <Autocomplete
-            sx={{
-              width: 300,
-              "& .MuiAutocomplete-input": {
-                textTransform: "capitalize",
-              },
-            }}
-            slotProps={{
-              popper: { style: { textTransform: "capitalize" } },
-            }}
-            open={open}
-            onOpen={() => {
-              setOpen(true);
-            }}
-            onClose={() => {
-              setOpen(false);
-            }}
-            onChange={handlePokemonSelection}
-            isOptionEqualToValue={(option, value) => option.name === value.name}
-            getOptionLabel={(option) => humanizeString(option.name)}
-            options={options}
-            loading={loadingAllPokemons}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search a Pokémon"
-                slotProps={{
-                  input: {
-                    ...params.InputProps,
-                    endAdornment: (
-                      <Fragment>
-                        {loadingAllPokemons ? (
-                          <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                      </Fragment>
-                    ),
-                  },
-                }}
-              />
-            )}
-          />
-        </Box>
+          slotProps={{
+            popper: { style: { textTransform: "capitalize" } },
+          }}
+          open={open}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          onChange={handlePokemonSelection}
+          isOptionEqualToValue={(option, value) => option.name === value.name}
+          getOptionLabel={(option) => humanizeString(option.name)}
+          options={options}
+          loading={loadingAllPokemons}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search a Pokémon"
+              slotProps={{
+                input: {
+                  ...params.InputProps,
+                  endAdornment: (
+                    <Fragment>
+                      {loadingAllPokemons ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </Fragment>
+                  ),
+                },
+              }}
+            />
+          )}
+        />
+      </Box>
+      <Container sx={{ [theme.breakpoints.down("md")]: { pt: 12 } }}>
         {loadingPokemons ? (
           <Stack alignItems="center" height="90vh" justifyContent="center">
             <CircularProgress size={50} />

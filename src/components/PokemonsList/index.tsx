@@ -10,7 +10,7 @@ type PokemonsListProps = {
 
 const PokemonsList = ({ fromMine = false, pokemons }: PokemonsListProps) => {
   return (
-    <Grid2 container spacing={4} m={4} pb={10}>
+    <Grid2 container spacing={4} m={2} pb={10}>
       {pokemons.map((pokemon) => (
         <Grid2 key={pokemon.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <PokemonCard pokemon={pokemon} fromMine={fromMine} />

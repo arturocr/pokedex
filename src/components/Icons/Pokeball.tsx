@@ -6,7 +6,7 @@ const Pokeball = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <title>Pokémon</title>
+    <title>Pokéball</title>
     <g strokeWidth="0" />
     <g strokeLinecap="round" strokeLinejoin="round" />
     <g>

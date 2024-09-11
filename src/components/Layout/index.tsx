@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { HomeRounded } from "@mui/icons-material";
 import Pokeball from "../Icons/Pokeball";
+import PokemonLogo from "../Icons/PokemonLogo";
 
 const Layout = ({ children }: PropsWithChildren) => {
   const theme = useTheme();
@@ -23,6 +24,9 @@ const Layout = ({ children }: PropsWithChildren) => {
               />
             </Link>
           </Tooltip>
+          <Link to="/">
+            <PokemonLogo />
+          </Link>
           <Tooltip title="My Pokémon">
             <Link to="/mine" color={theme.palette.common.white}>
               <Pokeball />
